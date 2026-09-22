@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --page: #fdfbf7;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-charcoal-800 antialiased;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+  }
+
+  ::selection {
+    @apply bg-gold-200 text-charcoal-900;
+  }
+
+  /* Slim, unobtrusive scrollbar that suits the light palette */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-ivory;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-sand;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-rose-200;
+  }
+}
+
+@layer components {
+  .container-luxe {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-medium uppercase tracking-luxe text-gold-500;
+  }
+
+  .heading-display {
+    @apply font-serif font-light leading-[1.08] tracking-tight text-charcoal-900;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full text-[13px] font-medium
+           transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-charcoal-900 px-7 py-3.5 text-cream hover:bg-charcoal-600
+           hover:shadow-lift active:scale-[0.98];
+  }
+
+  .btn-gold {
+    @apply btn bg-gradient-to-r from-gold-400 to-gold-500 px-7 py-3.5 text-white
+           hover:from-gold-500 hover:to-gold-600 hover:shadow-lift active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply btn border border-charcoal-900/15 bg-transparent px-7 py-3.5 text-charcoal-800
+           hover:border-charcoal-900 hover:bg-charcoal-900 hover:text-cream active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply btn px-4 py-2 text-charcoal-400 hover:bg-ivory hover:text-charcoal-900;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-sand bg-white px-4 py-3 text-sm text-charcoal-800
+           placeholder:text-charcoal-400/60 focus:border-gold-300 focus:outline-none
+           focus:ring-2 focus:ring-gold-200/50 transition;
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-medium uppercase tracking-wider text-charcoal-400;
+  }
+
+  .card {
+    @apply rounded-2xl border border-sand/70 bg-white shadow-soft;
+  }
+
+  .hairline {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-sand to-transparent;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

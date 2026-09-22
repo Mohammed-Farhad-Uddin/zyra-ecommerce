@@ -1,0 +1,20 @@
+{
+  "name": "aurelia-jewelry",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @aurelia/frontend",
+    "build": "npm run generate --workspace @aurelia/backend && npm run build --workspace @aurelia/frontend",
+    "start": "npm run start --workspace @aurelia/frontend",
+    "setup": "npm run setup --workspace @aurelia/backend",
+    "generate": "npm run generate --workspace @aurelia/backend",
+    "db:push": "npm run db:push --workspace @aurelia/backend",
+    "db:seed": "npm run db:seed --workspace @aurelia/backend",
+    "db:studio": "npm run db:studio --workspace @aurelia/backend",
+    "typecheck": "npm run typecheck --workspace @aurelia/frontend"
+  }
+}

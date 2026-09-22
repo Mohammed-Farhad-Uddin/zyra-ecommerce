@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F7F2EA"/>
+      <stop offset="55%" stop-color="#FCF5F2"/>
+      <stop offset="100%" stop-color="#EFE6DA"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E8D4A9"/>
+      <stop offset="50%" stop-color="#C9A227"/>
+      <stop offset="100%" stop-color="#D49A83"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <circle cx="400" cy="372" r="118" fill="none" stroke="url(#gold)" stroke-width="10"/>
+  <path d="M400 168 l46 78 h-92 z" fill="url(#gold)" opacity="0.9"/>
+  <path d="M354 246 h92 l-46 62 z" fill="#B08D3F" opacity="0.55"/>
+  <text x="400" y="596" text-anchor="middle" font-family="Georgia, serif" font-size="34" letter-spacing="10" fill="#8C6F2E">AURELIA</text>
+  <text x="400" y="636" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" letter-spacing="6" fill="#6B6660">FINE JEWELLERY</text>
+</svg>
