@@ -44,11 +44,6 @@ Then open http://localhost:3000
 
 The admin panel is at http://localhost:3000/admin. There is one account, stored in MongoDB (password is hashed). It is created automatically every time the server starts.
 
-| Field    | Value                    |
-| -------- | ------------------------ |
-| Username | `Mohammed Farhad Uddin`  |
-| Password | `!@#Farhad456`           |
-
 ## Scripts
 
 All of these are run from the repo root and delegate to the right workspace.
