@@ -8,6 +8,8 @@ if (existsSync(backendEnv)) loadEnv({ path: backendEnv });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Next 16 writes AGENTS.md on startup. This app already has its own docs.
+  agentRules: false,
   // The backend workspace ships TypeScript source rather than a build output,
   // so Next has to compile it alongside the app.
   transpilePackages: ['@aurelia/backend'],

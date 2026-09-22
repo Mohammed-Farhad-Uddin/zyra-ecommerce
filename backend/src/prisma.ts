@@ -8,15 +8,17 @@ import { PrismaClient } from '@prisma/client';
  * Reading backend/.env here means DB_URL has to be set in exactly one file.
  */
 function loadDatabaseEnv() {
-  const candidates = [
-    path.resolve(process.cwd(), 'backend', '.env'),
-    path.resolve(process.cwd(), '..', 'backend', '.env'),
-    path.resolve(process.cwd(), '.env'),
-  ];
+  // Vercel already injects DB_URL. Skip the filesystem so the production
+  // bundle does not trace the whole repo.
+  if (process.env.DB_URL?.trim()) return;
 
-  for (const file of candidates) {
-    if (existsSync(file)) loadEnv({ path: file });
-  }
+  const fromRepoRoot = path.join(process.cwd(), 'backend', '.env');
+  const fromFrontend = path.join(process.cwd(), '..', 'backend', '.env');
+  const fromCwd = path.join(process.cwd(), '.env');
+
+  if (existsSync(/*turbopackIgnore: true*/ fromRepoRoot)) loadEnv({ path: fromRepoRoot });
+  else if (existsSync(/*turbopackIgnore: true*/ fromFrontend)) loadEnv({ path: fromFrontend });
+  else if (existsSync(/*turbopackIgnore: true*/ fromCwd)) loadEnv({ path: fromCwd });
 }
 
 loadDatabaseEnv();
