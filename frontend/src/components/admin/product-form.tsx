@@ -52,11 +52,19 @@ export function ProductForm({
   const [images, setImages] = useState<EditableImage[]>(
     product?.images.map((image) => ({ url: image.url, isPrimary: image.isPrimary })) ?? [],
   );
+  const [removedImageUrls, setRemovedImageUrls] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((current) => ({ ...current, [key]: value }));
+  }
+
+  function updateImages(next: EditableImage[]) {
+    const kept = new Set(next.map((image) => image.url));
+    const dropped = images.filter((image) => !kept.has(image.url)).map((image) => image.url);
+    if (dropped.length > 0) setRemovedImageUrls((current) => [...current, ...dropped]);
+    setImages(next);
   }
 
   async function submit(event: React.FormEvent) {
@@ -85,6 +93,7 @@ export function ProductForm({
             comparePrice: form.comparePrice ? Number(form.comparePrice) : null,
             stock: Number(form.stock),
             images,
+            removedImageUrls,
           }),
         },
       );
@@ -229,7 +238,7 @@ export function ProductForm({
               Upload one or more photos, then pick which one appears as the cover.
             </p>
             <div className="mt-5">
-              <ImageUploader images={images} onChange={setImages} />
+              <ImageUploader images={images} onChange={updateImages} />
             </div>
           </section>
         </div>

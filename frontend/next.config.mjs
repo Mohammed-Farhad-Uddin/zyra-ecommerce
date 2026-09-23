@@ -14,7 +14,7 @@ const nextConfig = {
   // so Next has to compile it alongside the app.
   transpilePackages: ['@aurelia/backend'],
   // bcryptjs is required from node_modules at runtime instead of being bundled.
-  serverExternalPackages: ['bcryptjs'],
+  serverExternalPackages: ['bcryptjs', 'cloudinary'],
   images: {
     // Product photos come from remote CDNs and from local /public/uploads at runtime,
     // so the optimizer is bypassed to keep both sources working without sharp.

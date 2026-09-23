@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/api-auth';
 import { normalizeImages, prisma, uniqueSlug, type IncomingImage } from '@aurelia/backend';
+import { deleteUnusedCloudinaryImages } from '@aurelia/backend/cloudinary';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -44,6 +45,9 @@ export async function POST(request: Request) {
   } = body;
 
   const images = (body.images ?? []) as IncomingImage[];
+  const removedImageUrls = Array.isArray(body.removedImageUrls)
+    ? (body.removedImageUrls as string[])
+    : [];
 
   if (!title?.trim()) return NextResponse.json({ error: 'Title is required' }, { status: 400 });
   if (!description?.trim())
@@ -82,6 +86,9 @@ export async function POST(request: Request) {
     },
     include: { images: true, category: true },
   });
+
+  const kept = new Set(images.map((image) => image.url));
+  await deleteUnusedCloudinaryImages(removedImageUrls.filter((url) => !kept.has(url)));
 
   return NextResponse.json(product, { status: 201 });
 }

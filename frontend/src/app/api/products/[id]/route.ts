@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/api-auth';
 import { normalizeImages, prisma, uniqueSlug, type IncomingImage } from '@aurelia/backend';
+import { deleteUnusedCloudinaryImages } from '@aurelia/backend/cloudinary';
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -63,8 +64,16 @@ export async function PATCH(request: Request, { params }: Params) {
     data.inStock = Boolean(body.inStock);
   }
 
+  const removedImageUrls = Array.isArray(body.removedImageUrls)
+    ? (body.removedImageUrls as string[])
+    : [];
+  let previousUrls: string[] = [];
+
   // Images are replaced wholesale so ordering and the primary flag stay consistent.
   if (Array.isArray(body.images)) {
+    previousUrls = (
+      await prisma.productImage.findMany({ where: { productId: id }, select: { url: true } })
+    ).map((image) => image.url);
     await prisma.productImage.deleteMany({ where: { productId: id } });
     const title = (data.title as string) ?? current.title;
     data.images = { create: normalizeImages(body.images as IncomingImage[], title) };
@@ -76,6 +85,12 @@ export async function PATCH(request: Request, { params }: Params) {
     include: { images: true, category: true },
   });
 
+  if (Array.isArray(body.images)) {
+    const kept = new Set((body.images as IncomingImage[]).map((image) => image.url));
+    const dropped = [...previousUrls, ...removedImageUrls].filter((url) => !kept.has(url));
+    await deleteUnusedCloudinaryImages(dropped);
+  }
+
   return NextResponse.json(product);
 }
 
@@ -84,10 +99,13 @@ export async function DELETE(_request: Request, { params }: Params) {
   if (denied) return denied;
 
   const { id } = await params;
-  try {
-    await prisma.product.delete({ where: { id } });
-    return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json({ error: 'Product not found' }, { status: 404 });
-  }
+  const existing = await prisma.product.findUnique({
+    where: { id },
+    include: { images: { select: { url: true } } },
+  });
+  if (!existing) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+
+  await prisma.product.delete({ where: { id } });
+  await deleteUnusedCloudinaryImages(existing.images.map((image) => image.url));
+  return NextResponse.json({ ok: true });
 }

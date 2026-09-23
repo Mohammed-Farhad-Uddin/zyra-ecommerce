@@ -34,17 +34,49 @@ export function ImageUploader({
     const list = Array.from(files);
     if (list.length === 0) return;
 
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/gif'];
+    const tooBig = list.find((file) => file.size > 6 * 1024 * 1024);
+    const wrongType = list.find((file) => file.type && !allowed.includes(file.type));
+    if (wrongType) {
+      toast({
+        title: `${wrongType.name}: only JPG, PNG, WebP, AVIF or GIF images are allowed`,
+        variant: 'error',
+      });
+      return;
+    }
+    if (tooBig) {
+      toast({ title: `${tooBig.name} is larger than 6 MB`, variant: 'error' });
+      return;
+    }
+
     setUploading(true);
     try {
-      const formData = new FormData();
-      list.forEach((file) => formData.append('files', file));
+      const signResponse = await fetch('/api/upload', { method: 'POST' });
+      const sign = await signResponse.json();
+      if (!signResponse.ok) throw new Error(sign.error ?? 'Could not start the upload');
 
-      const response = await fetch('/api/upload', { method: 'POST', body: formData });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error ?? 'Upload failed');
+      const urls: string[] = [];
+      for (const file of list) {
+        const body = new FormData();
+        body.append('file', file);
+        body.append('api_key', sign.apiKey);
+        body.append('timestamp', String(sign.timestamp));
+        body.append('signature', sign.signature);
+        body.append('folder', sign.folder);
 
-      append(data.urls as string[]);
-      toast({ title: `${data.urls.length} image(s) uploaded` });
+        const uploaded = await fetch(
+          `https://api.cloudinary.com/v1_1/${sign.cloudName}/image/upload`,
+          { method: 'POST', body },
+        );
+        const result = await uploaded.json();
+        if (!uploaded.ok) {
+          throw new Error(result?.error?.message ?? `Could not upload ${file.name}`);
+        }
+        urls.push(result.secure_url as string);
+      }
+
+      append(urls);
+      toast({ title: `${urls.length} image(s) uploaded` });
     } catch (error) {
       toast({
         title: 'Upload failed',
