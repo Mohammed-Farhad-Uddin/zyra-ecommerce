@@ -5,14 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const currency = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  minimumFractionDigits: 2,
+const taka = new Intl.NumberFormat('en-BD', {
+  maximumFractionDigits: 0,
 });
 
 export function formatPrice(value: number) {
-  return currency.format(value);
+  return `৳${taka.format(Math.round(value))}`;
 }
 
 export function formatDate(value: Date | string) {

@@ -1,17 +1,16 @@
-import { Gem, Instagram, Mail, Phone, Truck } from 'lucide-react';
+import { Instagram, Mail, Phone, Truck } from 'lucide-react';
 import Link from 'next/link';
 import type { CategoryDTO } from '@aurelia/backend/shared';
 
 const promises = [
-  { icon: Truck, title: 'Free delivery', copy: 'On every order, nationwide' },
-  { icon: Gem, title: 'Lifetime care', copy: 'Free cleaning & re-polishing' },
+  { icon: Truck, title: 'Nationwide delivery', copy: 'Dhaka ৳60 · outside ৳120' },
   { icon: Phone, title: 'Cash on delivery', copy: 'Pay only when it arrives' },
 ];
 
 export function Footer({ categories }: { categories: CategoryDTO[] }) {
   return (
     <footer className="mt-24 border-t border-sand bg-ivory">
-      <div className="container-luxe grid gap-8 border-b border-sand py-12 sm:grid-cols-3">
+      <div className="container-luxe grid gap-8 border-b border-sand py-12 sm:grid-cols-2">
         {promises.map(({ icon: Icon, title, copy }) => (
           <div key={title} className="flex items-center gap-4">
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold-200 bg-white">
@@ -27,7 +26,7 @@ export function Footer({ categories }: { categories: CategoryDTO[] }) {
 
       <div className="container-luxe grid gap-10 py-14 md:grid-cols-4">
         <div className="md:col-span-2">
-          <p className="font-serif text-2xl tracking-[0.3em] text-charcoal-900">AURELIA</p>
+          <p className="font-serif text-2xl tracking-[0.3em] text-charcoal-900">Zyra</p>
           <p className="mt-1 text-[10px] uppercase tracking-[0.42em] text-gold-500">
             Fine Jewellery
           </p>
@@ -96,7 +95,7 @@ export function Footer({ categories }: { categories: CategoryDTO[] }) {
 
       <div className="border-t border-sand py-6">
         <div className="container-luxe flex flex-col items-center justify-between gap-2 text-xs text-charcoal-400 sm:flex-row">
-          <p>© {new Date().getFullYear()} Aurelia Fine Jewellery. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Zyra Fine Jewellery. All rights reserved.</p>
           <p>Cash on delivery · No online payment required</p>
         </div>
       </div>

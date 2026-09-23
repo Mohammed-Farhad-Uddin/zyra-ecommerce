@@ -3,8 +3,96 @@
  * components and middleware. Nothing in here may touch Prisma or Node APIs.
  */
 
-/** Flat delivery fee applied to every order. 0 means free shipping. */
-export const SHIPPING_FEE = 0;
+/** Delivery inside Dhaka district, in Taka. */
+export const INSIDE_DHAKA_FEE = 60;
+
+/** Delivery to any district other than Dhaka, in Taka. */
+export const OUTSIDE_DHAKA_FEE = 120;
+
+export const DHAKA_DISTRICT = 'Dhaka';
+
+/** All 64 districts. The Dhaka value must stay exactly `Dhaka` so the fee rule matches. */
+export const BD_DISTRICTS = [
+  'Bagerhat',
+  'Bandarban',
+  'Barguna',
+  'Barishal',
+  'Bhola',
+  'Bogura',
+  'Brahmanbaria',
+  'Chandpur',
+  'Chapainawabganj',
+  'Chattogram',
+  'Chuadanga',
+  "Cox's Bazar",
+  'Cumilla',
+  'Dhaka',
+  'Dinajpur',
+  'Faridpur',
+  'Feni',
+  'Gaibandha',
+  'Gazipur',
+  'Gopalganj',
+  'Habiganj',
+  'Jamalpur',
+  'Jashore',
+  'Jhalokati',
+  'Jhenaidah',
+  'Joypurhat',
+  'Khagrachhari',
+  'Khulna',
+  'Kishoreganj',
+  'Kurigram',
+  'Kushtia',
+  'Lakshmipur',
+  'Lalmonirhat',
+  'Madaripur',
+  'Magura',
+  'Manikganj',
+  'Meherpur',
+  'Moulvibazar',
+  'Munshiganj',
+  'Mymensingh',
+  'Naogaon',
+  'Narail',
+  'Narayanganj',
+  'Narsingdi',
+  'Natore',
+  'Netrokona',
+  'Nilphamari',
+  'Noakhali',
+  'Pabna',
+  'Panchagarh',
+  'Patuakhali',
+  'Pirojpur',
+  'Rajbari',
+  'Rajshahi',
+  'Rangamati',
+  'Rangpur',
+  'Satkhira',
+  'Shariatpur',
+  'Sherpur',
+  'Sirajganj',
+  'Sunamganj',
+  'Sylhet',
+  'Tangail',
+  'Thakurgaon',
+] as const;
+
+export type District = (typeof BD_DISTRICTS)[number];
+
+export function isDistrict(value: string): value is District {
+  return (BD_DISTRICTS as readonly string[]).includes(value);
+}
+
+/**
+ * Shipping for one order. Free only when every item is marked free delivery.
+ * Otherwise Dhaka is ৳60 and every other district is ৳120.
+ */
+export function shippingFeeFor(district: string, allItemsFreeDelivery: boolean) {
+  if (allItemsFreeDelivery) return 0;
+  return district === DHAKA_DISTRICT ? INSIDE_DHAKA_FEE : OUTSIDE_DHAKA_FEE;
+}
 
 export type ProductImageDTO = {
   id: string;
@@ -37,6 +125,7 @@ export type ProductDTO = {
   inStock: boolean;
   isPopular: boolean;
   isNewArrival: boolean;
+  isFreeDelivery: boolean;
   isActive: boolean;
   categoryId: string;
   category: { id: string; name: string; slug: string };

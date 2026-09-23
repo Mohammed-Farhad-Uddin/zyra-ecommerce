@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/api-auth';
-import { generateOrderNumber, prisma, SHIPPING_FEE } from '@aurelia/backend';
+import { generateOrderNumber, isDistrict, prisma, shippingFeeFor } from '@aurelia/backend';
 
 type IncomingItem = { productId: string; quantity: number };
 
@@ -16,6 +16,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'A phone number is required' }, { status: 400 });
     if (!address?.trim() || address.trim().length < 10)
       return NextResponse.json({ error: 'A full delivery address is required' }, { status: 400 });
+    const district = city?.trim() ?? '';
+    if (!isDistrict(district))
+      return NextResponse.json({ error: 'Select a district in Bangladesh' }, { status: 400 });
     if (!Array.isArray(items) || items.length === 0)
       return NextResponse.json({ error: 'Your cart is empty' }, { status: 400 });
 
@@ -52,6 +55,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'These items are out of stock' }, { status: 400 });
 
     const subtotal = Number(lines.reduce((sum, line) => sum + line.lineTotal, 0).toFixed(2));
+    const allFree = lines.every((line) =>
+      Boolean(products.find((product) => product.id === line.productId)?.isFreeDelivery),
+    );
+    const shippingFee = shippingFeeFor(district, allFree);
 
     const order = await prisma.$transaction(async (tx) => {
       const created = await tx.order.create({
@@ -60,11 +67,11 @@ export async function POST(request: Request) {
           customerName: customerName.trim(),
           phone: phone.trim(),
           address: address.trim(),
-          city: city?.trim() || null,
+          city: district,
           note: note?.trim() || null,
           subtotal,
-          shippingFee: SHIPPING_FEE,
-          total: Number((subtotal + SHIPPING_FEE).toFixed(2)),
+          shippingFee,
+          total: Number((subtotal + shippingFee).toFixed(2)),
           items: { create: lines },
         },
         include: { items: true },

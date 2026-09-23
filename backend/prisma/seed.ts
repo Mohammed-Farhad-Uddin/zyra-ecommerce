@@ -84,7 +84,7 @@ type SeedProduct = {
 
 const products: SeedProduct[] = [
   {
-    title: 'Aurelia Solitaire Ring',
+    title: 'Zyra Solitaire Ring',
     category: 'rings',
     price: 489,
     comparePrice: 560,
@@ -299,7 +299,7 @@ async function main() {
   if (sample) {
     await prisma.order.create({
       data: {
-        orderNumber: 'AUR-DEMO01',
+        orderNumber: 'ZYR-DEMO01',
         customerName: 'Nadia Rahman',
         phone: '+8801712345678',
         address: 'House 14, Road 7, Banani',

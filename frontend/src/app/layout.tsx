@@ -18,8 +18,8 @@ const body = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Aurelia — Fine Jewellery for Women',
-    template: '%s · Aurelia',
+    default: 'Zyra — Fine Jewellery for Women',
+    template: '%s · Zyra',
   },
   description:
     'Handcrafted rings, necklaces, bracelets and earrings in recycled gold and ethically sourced stones. Cash on delivery available.',

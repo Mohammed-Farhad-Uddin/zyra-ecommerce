@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { SmartImage } from '@/components/ui/smart-image';
-import { SHIPPING_FEE } from '@aurelia/backend/shared';
 import { formatPrice } from '@/lib/utils';
 import { selectSubtotal, useCart } from '@/store/cart';
 
@@ -140,16 +139,12 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between text-charcoal-400">
                 <span>Delivery</span>
-                <span className="text-green-700">
-                  {SHIPPING_FEE > 0 ? formatPrice(SHIPPING_FEE) : 'Free'}
-                </span>
+                <span className="text-charcoal-800">At checkout</span>
               </div>
               <div className="hairline my-4" />
               <div className="flex items-baseline justify-between">
-                <span className="text-sm text-charcoal-400">Total</span>
-                <span className="font-serif text-3xl text-charcoal-900">
-                  {formatPrice(subtotal + SHIPPING_FEE)}
-                </span>
+                <span className="text-sm text-charcoal-400">Items total</span>
+                <span className="font-serif text-3xl text-charcoal-900">{formatPrice(subtotal)}</span>
               </div>
             </div>
 

@@ -29,6 +29,7 @@ export function AddToCart({ product }: { product: ProductDTO }) {
         price: product.price,
         image: product.images[0]?.url ?? null,
         stock: product.stock,
+        isFreeDelivery: product.isFreeDelivery,
       },
       quantity,
     );

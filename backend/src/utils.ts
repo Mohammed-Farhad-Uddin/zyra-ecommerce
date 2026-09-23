@@ -20,5 +20,5 @@ export function uniqueSlug(base: string, taken: string[]) {
 export function generateOrderNumber() {
   const stamp = Date.now().toString(36).toUpperCase().slice(-6);
   const random = Math.random().toString(36).toUpperCase().slice(2, 6);
-  return `AUR-${stamp}${random}`;
+  return `ZYR-${stamp}${random}`;
 }

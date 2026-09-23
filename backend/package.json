@@ -2,7 +2,7 @@
   "name": "@aurelia/backend",
   "version": "1.0.0",
   "private": true,
-  "description": "Database schema, Prisma client and server-side data access for the Aurelia store",
+  "description": "Database schema, Prisma client and server-side data access for the Zyra store",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {

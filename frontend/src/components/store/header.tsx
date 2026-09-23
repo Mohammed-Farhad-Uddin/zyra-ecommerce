@@ -73,7 +73,7 @@ export function Header({ categories }: { categories: CategoryDTO[] }) {
 
           <Link href="/" className="group flex shrink-0 flex-col items-center lg:items-start">
             <span className="font-serif text-2xl font-light tracking-[0.3em] text-charcoal-900">
-              AURELIA
+              Zyra
             </span>
             <span className="hidden text-[9px] uppercase tracking-[0.42em] text-gold-500 lg:block">
               Fine Jewellery
@@ -174,7 +174,7 @@ export function Header({ categories }: { categories: CategoryDTO[] }) {
               className="fixed inset-y-0 left-0 z-[70] flex w-[82%] max-w-xs flex-col bg-cream lg:hidden"
             >
               <div className="flex items-center justify-between border-b border-sand px-6 py-5">
-                <span className="font-serif text-xl tracking-[0.3em]">AURELIA</span>
+                <span className="font-serif text-xl tracking-[0.3em]">Zyra</span>
                 <button type="button" onClick={() => setMobileOpen(false)} aria-label="Close menu">
                   <X className="h-5 w-5 text-charcoal-800" />
                 </button>

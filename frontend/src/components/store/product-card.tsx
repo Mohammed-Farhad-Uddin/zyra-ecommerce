@@ -32,6 +32,7 @@ export function ProductCard({ product, index = 0 }: { product: ProductDTO; index
       price: product.price,
       image: primary,
       stock: product.stock,
+      isFreeDelivery: product.isFreeDelivery,
     });
     toast({ title: 'Added to your bag', description: product.title });
     openCart();

@@ -14,8 +14,30 @@ import { formatDate, formatPrice } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
+/** Midnight in Bangladesh, shifted back by whole days. Today is 0. */
+function dhakaStart(daysAgo: number) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Dhaka',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date());
+  const [year, month, day] = parts.split('-').map(Number);
+  return new Date(Date.UTC(year, month - 1, day - daysAgo, -6, 0, 0, 0));
+}
+
+async function periodMetrics(since: Date) {
+  const deliveredWhere = { status: 'Delivered', updatedAt: { gte: since } };
+  const [received, delivered, sales] = await Promise.all([
+    prisma.order.count({ where: { createdAt: { gte: since } } }),
+    prisma.order.count({ where: deliveredWhere }),
+    prisma.order.aggregate({ where: deliveredWhere, _sum: { total: true } }),
+  ]);
+  return { received, delivered, sales: sales._sum.total ?? 0 };
+}
+
 export default async function AdminDashboardPage() {
-  const [productCount, categoryCount, orderCount, pendingCount, delivered, recentOrders, lowStock] =
+  const [productCount, categoryCount, orderCount, pendingCount, delivered, recentOrders, lowStock, today, week, month] =
     await Promise.all([
       prisma.product.count(),
       prisma.category.count(),
@@ -33,6 +55,9 @@ export default async function AdminDashboardPage() {
         orderBy: { stock: 'asc' },
         take: 5,
       }),
+      periodMetrics(dhakaStart(0)),
+      periodMetrics(dhakaStart(6)),
+      periodMetrics(dhakaStart(29)),
     ]);
 
   const stats = [
@@ -53,9 +78,33 @@ export default async function AdminDashboardPage() {
       <header>
         <h1 className="heading-display text-3xl sm:text-4xl">Dashboard</h1>
         <p className="mt-1.5 text-sm text-charcoal-400">
-          A snapshot of the store — {formatDate(new Date())}
+          Sales figures use Bangladesh time — {formatDate(new Date())}
         </p>
       </header>
+
+      <section className="grid gap-4 lg:grid-cols-3">
+        <PeriodReport
+          title="Today"
+          receivedLabel="Total orders received today"
+          deliveredLabel="Total orders successfully delivered today"
+          salesLabel="Total monetary value of delivered orders today"
+          metrics={today}
+        />
+        <PeriodReport
+          title="Last 7 days"
+          receivedLabel="Total orders received"
+          deliveredLabel="Total delivered orders"
+          salesLabel="Total sales amount from delivered orders"
+          metrics={week}
+        />
+        <PeriodReport
+          title="Last 30 days"
+          receivedLabel="Total orders received"
+          deliveredLabel="Total delivered orders"
+          salesLabel="Total sales amount from delivered orders"
+          metrics={month}
+        />
+      </section>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {stats.map(({ label, value, icon: Icon, href }) => (
@@ -154,6 +203,40 @@ export default async function AdminDashboardPage() {
         </section>
       </div>
     </div>
+  );
+}
+
+function PeriodReport({
+  title,
+  receivedLabel,
+  deliveredLabel,
+  salesLabel,
+  metrics,
+}: {
+  title: string;
+  receivedLabel: string;
+  deliveredLabel: string;
+  salesLabel: string;
+  metrics: { received: number; delivered: number; sales: number };
+}) {
+  const rows = [
+    { label: receivedLabel, value: String(metrics.received) },
+    { label: deliveredLabel, value: String(metrics.delivered) },
+    { label: salesLabel, value: formatPrice(metrics.sales) },
+  ];
+
+  return (
+    <article className="card p-5">
+      <h2 className="font-serif text-2xl text-charcoal-900">{title}</h2>
+      <dl className="mt-4 space-y-4">
+        {rows.map((row) => (
+          <div key={row.label}>
+            <dt className="text-xs leading-snug text-charcoal-400">{row.label}</dt>
+            <dd className="mt-1 font-serif text-2xl text-charcoal-900">{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </article>
   );
 }
 

@@ -159,7 +159,8 @@ export function CartDrawer() {
                     </span>
                   </div>
                   <p className="text-xs text-charcoal-400">
-                    Shipping is complimentary. Pay in cash when your order arrives.
+                    Delivery is added at checkout: ৳60 inside Dhaka, ৳120 outside. Pay in cash on
+                    arrival.
                   </p>
                   <div className="grid gap-2">
                     <Link href="/checkout" onClick={closeCart} className="btn-gold w-full">

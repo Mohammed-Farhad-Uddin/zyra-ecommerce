@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { SmartImage } from '@/components/ui/smart-image';
 import { useToast } from '@/components/ui/toast';
-import { SHIPPING_FEE } from '@aurelia/backend/shared';
+import { BD_DISTRICTS, isDistrict, shippingFeeFor } from '@aurelia/backend/shared';
 import { formatPrice } from '@/lib/utils';
 import { selectSubtotal, useCart } from '@/store/cart';
 
@@ -55,6 +55,7 @@ export default function CheckoutPage() {
       next.phone = 'Enter a valid phone number we can call';
     if (form.address.trim().length < 10)
       next.address = 'Enter the full delivery address, including area';
+    if (!isDistrict(form.city)) next.city = 'Select your district';
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -88,6 +89,10 @@ export default function CheckoutPage() {
       });
     }
   }
+
+  const quantity = items.reduce((sum, item) => sum + item.quantity, 0);
+  const allFree = items.length > 0 && items.every((item) => item.isFreeDelivery);
+  const shippingFee = allFree ? 0 : form.city ? shippingFeeFor(form.city, false) : null;
 
   if (!hydrated) {
     return (
@@ -127,6 +132,10 @@ export default function CheckoutPage() {
               <h2 className="font-serif text-2xl text-charcoal-900">Delivery details</h2>
             </div>
 
+            <div className="mt-6 rounded-2xl border border-gold-200 bg-gold-100/50 px-5 py-4 text-sm leading-relaxed text-charcoal-800">
+              Delivery Charge: Inside Dhaka City - ৳60 Taka | Outside Dhaka City - ৳120 Taka
+            </div>
+
             <div className="mt-6 grid gap-5">
               <Field
                 label="Full name"
@@ -164,13 +173,26 @@ export default function CheckoutPage() {
                   <p className="mt-1.5 text-xs text-rose-500">{errors.address}</p>
                 ) : null}
               </div>
-              <Field
-                label="City / district"
-                value={form.city}
-                onChange={(v) => update('city', v)}
-                placeholder="Dhaka"
-                autoComplete="address-level2"
-              />
+              <div>
+                <label className="label" htmlFor="district">
+                  District <span className="text-rose-500">*</span>
+                </label>
+                <select
+                  id="district"
+                  required
+                  value={form.city}
+                  onChange={(e) => update('city', e.target.value)}
+                  className="input"
+                >
+                  <option value="">Select a district</option>
+                  {BD_DISTRICTS.map((district) => (
+                    <option key={district} value={district}>
+                      {district}
+                    </option>
+                  ))}
+                </select>
+                {errors.city ? <p className="mt-1.5 text-xs text-rose-500">{errors.city}</p> : null}
+              </div>
               <div>
                 <label className="label" htmlFor="note">
                   Order note (optional)
@@ -243,15 +265,24 @@ export default function CheckoutPage() {
 
             <div className="space-y-2.5 text-sm">
               <div className="flex justify-between text-charcoal-400">
+                <span>Quantity</span>
+                <span className="text-charcoal-800">
+                  {quantity} {quantity === 1 ? 'piece' : 'pieces'}
+                </span>
+              </div>
+              <div className="flex justify-between text-charcoal-400">
                 <span>Subtotal</span>
                 <span className="text-charcoal-800">{formatPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between text-charcoal-400">
                 <span>Delivery</span>
-                <span className="text-green-700">
-                  {SHIPPING_FEE > 0 ? formatPrice(SHIPPING_FEE) : 'Free'}
+                <span className={shippingFee === 0 ? 'text-green-700' : 'text-charcoal-800'}>
+                  {shippingFee === null ? 'Select a district' : shippingFee === 0 ? 'Free' : formatPrice(shippingFee)}
                 </span>
               </div>
+              {allFree ? (
+                <p className="text-xs text-green-700">Every item in this order has free delivery.</p>
+              ) : null}
             </div>
 
             <div className="hairline my-5" />
@@ -259,7 +290,7 @@ export default function CheckoutPage() {
             <div className="flex items-baseline justify-between">
               <span className="text-sm text-charcoal-400">Total due on delivery</span>
               <span className="font-serif text-3xl text-charcoal-900">
-                {formatPrice(subtotal + SHIPPING_FEE)}
+                {formatPrice(subtotal + (shippingFee ?? 0))}
               </span>
             </div>
 

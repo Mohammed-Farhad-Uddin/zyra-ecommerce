@@ -13,6 +13,7 @@ function toProductDTO(product: ProductRow): ProductDTO {
   return {
     ...product,
     createdAt: product.createdAt.toISOString(),
+    isFreeDelivery: Boolean(product.isFreeDelivery),
     images: product.images.map((image) => ({
       id: image.id,
       url: image.url,

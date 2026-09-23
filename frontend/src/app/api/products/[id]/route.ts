@@ -42,6 +42,7 @@ export async function PATCH(request: Request, { params }: Params) {
   if (body.categoryId !== undefined) data.categoryId = body.categoryId;
   if (body.isPopular !== undefined) data.isPopular = Boolean(body.isPopular);
   if (body.isNewArrival !== undefined) data.isNewArrival = Boolean(body.isNewArrival);
+  if (body.isFreeDelivery !== undefined) data.isFreeDelivery = Boolean(body.isFreeDelivery);
   if (body.isActive !== undefined) data.isActive = Boolean(body.isActive);
 
   if (body.price !== undefined) {

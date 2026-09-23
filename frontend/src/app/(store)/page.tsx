@@ -68,7 +68,7 @@ export default async function HomePage() {
             Pay in cash when it arrives at your door
           </h2>
           <p className="mx-auto mt-5 max-w-lg text-sm leading-relaxed text-cream/60">
-            No cards, no online payment. Place your order, we deliver it free of charge, and you
+            No cards, no online payment. Delivery is ৳60 inside Dhaka and ৳120 outside, and you
             pay the courier on arrival.
           </p>
           <Link href="/shop" className="btn-gold mt-9">

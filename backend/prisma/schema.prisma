@@ -39,9 +39,10 @@ model Product {
   sku          String?
   stock        Int            @default(0)
   inStock      Boolean        @default(true)
-  isPopular    Boolean        @default(false)
-  isNewArrival Boolean        @default(false)
-  isActive     Boolean        @default(true)
+  isPopular      Boolean        @default(false)
+  isNewArrival   Boolean        @default(false)
+  isFreeDelivery Boolean        @default(false)
+  isActive       Boolean        @default(true)
   categoryId   String         @db.ObjectId
   category     Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   images       ProductImage[]

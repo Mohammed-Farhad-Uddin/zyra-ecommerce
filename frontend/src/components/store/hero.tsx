@@ -11,7 +11,6 @@ const HERO_IMAGE =
 const stats = [
   { value: '14k–18k', label: 'Solid & recycled gold' },
   { value: '2,400+', label: 'Happy customers' },
-  { value: 'Lifetime', label: 'Complimentary care' },
 ];
 
 export function Hero() {
@@ -52,7 +51,7 @@ export function Hero() {
             </Link>
           </div>
 
-          <div className="mt-12 grid grid-cols-3 gap-4 border-t border-sand pt-8">
+          <div className="mt-12 grid grid-cols-2 gap-4 border-t border-sand pt-8">
             {stats.map((stat) => (
               <div key={stat.label}>
                 <p className="font-serif text-2xl text-charcoal-900">{stat.value}</p>
@@ -71,7 +70,7 @@ export function Hero() {
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-ivory shadow-lift sm:aspect-[5/5]">
             <SmartImage
               src={HERO_IMAGE}
-              alt="Model wearing the Aurelia autumn collection"
+              alt="Model wearing the Zyra autumn collection"
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -88,7 +87,7 @@ export function Hero() {
           >
             <p className="eyebrow">Now trending</p>
             <p className="mt-1 font-serif text-xl text-charcoal-900">Celeste Pearl Drop</p>
-            <p className="text-xs text-charcoal-400">From $398 · free delivery</p>
+            <p className="text-xs text-charcoal-400">From ৳398</p>
           </motion.div>
         </motion.div>
       </div>

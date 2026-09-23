@@ -58,7 +58,7 @@ function LoginForm() {
       >
         <div className="text-center">
           <Link href="/" className="font-serif text-3xl tracking-[0.3em] text-charcoal-900">
-            AURELIA
+            Zyra
           </Link>
           <p className="mt-1 text-[10px] uppercase tracking-[0.42em] text-gold-500">
             Store Administration
@@ -85,7 +85,7 @@ function LoginForm() {
                   autoComplete="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Mohammed Farhad Uddin"
+                  placeholder="Username"
                   className="input pl-11"
                 />
               </div>

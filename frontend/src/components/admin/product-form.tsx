@@ -20,6 +20,7 @@ type FormState = {
   stock: string;
   isPopular: boolean;
   isNewArrival: boolean;
+  isFreeDelivery: boolean;
   isActive: boolean;
 };
 
@@ -44,6 +45,7 @@ export function ProductForm({
     stock: product ? String(product.stock) : '10',
     isPopular: product?.isPopular ?? false,
     isNewArrival: product?.isNewArrival ?? true,
+    isFreeDelivery: product?.isFreeDelivery ?? false,
     isActive: product?.isActive ?? true,
   });
 
@@ -173,7 +175,7 @@ export function ProductForm({
                   id="title"
                   value={form.title}
                   onChange={(e) => update('title', e.target.value)}
-                  placeholder="e.g. Aurelia Solitaire Ring"
+                  placeholder="e.g. Zyra Solitaire Ring"
                   className="input"
                 />
               </div>
@@ -213,7 +215,7 @@ export function ProductForm({
                     id="sku"
                     value={form.sku}
                     onChange={(e) => update('sku', e.target.value)}
-                    placeholder="AUR-RING-001"
+                    placeholder="ZYR-RING-001"
                     className="input"
                   />
                 </div>
@@ -238,7 +240,7 @@ export function ProductForm({
             <div className="mt-5 grid gap-5 sm:grid-cols-2 xl:grid-cols-1">
               <div>
                 <label className="label" htmlFor="price">
-                  Price (USD) <span className="text-rose-500">*</span>
+                  Price (BDT) <span className="text-rose-500">*</span>
                 </label>
                 <input
                   id="price"
@@ -328,6 +330,12 @@ export function ProductForm({
                 hint="Feature in the New Arrivals section"
                 checked={form.isNewArrival}
                 onChange={(v) => update('isNewArrival', v)}
+              />
+              <Toggle
+                label="Free delivery"
+                hint="No delivery charge when every item in the order has this on"
+                checked={form.isFreeDelivery}
+                onChange={(v) => update('isFreeDelivery', v)}
               />
               <Toggle
                 label="Published"

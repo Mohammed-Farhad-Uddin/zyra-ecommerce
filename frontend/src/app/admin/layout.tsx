@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Admin · Aurelia',
+  title: 'Admin',
 };
 
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {

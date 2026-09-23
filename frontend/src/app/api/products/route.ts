@@ -39,6 +39,7 @@ export async function POST(request: Request) {
     stock,
     isPopular,
     isNewArrival,
+    isFreeDelivery,
     isActive,
   } = body;
 
@@ -73,6 +74,7 @@ export async function POST(request: Request) {
       inStock: parsedStock > 0,
       isPopular: Boolean(isPopular),
       isNewArrival: Boolean(isNewArrival),
+      isFreeDelivery: Boolean(isFreeDelivery),
       isActive: isActive === undefined ? true : Boolean(isActive),
       images: {
         create: normalizeImages(images, title.trim()),

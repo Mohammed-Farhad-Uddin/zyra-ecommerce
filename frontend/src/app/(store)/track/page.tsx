@@ -21,7 +21,7 @@ export default function TrackOrderPage() {
       </span>
       <h1 className="heading-display mt-6 text-4xl">Track your order</h1>
       <p className="mt-3 text-sm text-charcoal-400">
-        Enter the order ID from your confirmation screen, for example AUR-XXXXXX.
+        Enter the order ID from your confirmation screen, for example ZYR-XXXXXX.
       </p>
 
       <form onSubmit={submit} className="mt-8 flex w-full gap-3">
@@ -30,7 +30,7 @@ export default function TrackOrderPage() {
           <input
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="AUR-XXXXXX"
+            placeholder="ZYR-XXXXXX"
             className="input pl-11 uppercase tracking-wider"
           />
         </div>

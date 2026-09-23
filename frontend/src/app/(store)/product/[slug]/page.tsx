@@ -1,4 +1,4 @@
-import { Check, ChevronRight, Gem, RotateCcw, Truck, X } from 'lucide-react';
+import { Check, ChevronRight, RotateCcw, Truck, X } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { AddToCart } from '@/components/store/add-to-cart';
@@ -22,10 +22,8 @@ export async function generateMetadata({ params }: { params: Params }) {
   };
 }
 
-const perks = [
-  { icon: Truck, label: 'Free delivery', detail: '2–4 business days' },
-  { icon: RotateCcw, label: '14-day returns', detail: 'Unworn, in original box' },
-  { icon: Gem, label: 'Lifetime care', detail: 'Free cleaning & polishing' },
+const basePerks = [
+  { icon: RotateCcw, label: '2 days returns', detail: 'Unworn, in original box' },
 ];
 
 export default async function ProductPage({ params }: { params: Params }) {
@@ -133,8 +131,13 @@ export default async function ProductPage({ params }: { params: Params }) {
 
           <AddToCart product={product} />
 
-          <div className="mt-8 grid gap-4 rounded-2xl border border-sand bg-ivory/60 p-5 sm:grid-cols-3">
-            {perks.map(({ icon: Icon, label, detail }) => (
+          <div className="mt-8 grid gap-4 rounded-2xl border border-sand bg-ivory/60 p-5 sm:grid-cols-2">
+            {[
+              product.isFreeDelivery
+                ? { icon: Truck, label: 'Free delivery', detail: 'No charge on this piece' }
+                : { icon: Truck, label: 'Delivery', detail: 'Dhaka ৳60 · outside ৳120' },
+              ...basePerks,
+            ].map(({ icon: Icon, label, detail }) => (
               <div key={label} className="flex items-start gap-3">
                 <Icon className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" />
                 <div>

@@ -46,7 +46,7 @@ export function AdminShell({
     <div className="flex h-full flex-col bg-charcoal-900 text-cream">
       <div className="border-b border-white/10 px-6 py-6">
         <Link href="/admin" className="font-serif text-xl tracking-[0.3em]">
-          AURELIA
+          Zyra
         </Link>
         <p className="mt-1 text-[9px] uppercase tracking-[0.38em] text-gold-300">Admin panel</p>
       </div>
@@ -107,7 +107,7 @@ export function AdminShell({
           <button type="button" onClick={() => setOpen(true)} aria-label="Open admin menu">
             <Menu className="h-5 w-5 text-charcoal-800" />
           </button>
-          <span className="font-serif text-lg tracking-[0.2em] text-charcoal-900">AURELIA</span>
+          <span className="font-serif text-lg tracking-[0.2em] text-charcoal-900">Zyra</span>
         </header>
 
         <main className="flex-1 bg-cream px-5 py-7 sm:px-8 lg:px-10 lg:py-10">{children}</main>

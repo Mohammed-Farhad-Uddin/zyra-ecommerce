@@ -1,4 +1,4 @@
-# Aurelia — Fine Jewellery E-commerce
+# Zyra — Fine Jewellery E-commerce
 
 A responsive storefront and admin panel for a women's jewellery brand, built with Next.js 15 (App Router), Tailwind CSS, Prisma and MongoDB. Checkout is cash on delivery only — there is no payment gateway.
 
@@ -16,7 +16,7 @@ backend/    @aurelia/backend  — Prisma schema, seed, MongoDB access, admin acc
 | Import                      | Contains                                                   | Safe to use in                  |
 | --------------------------- | ---------------------------------------------------------- | ------------------------------- |
 | `@aurelia/backend`          | Prisma client, queries, slug/order helpers, image helpers    | Server components, API routes   |
-| `@aurelia/backend/shared`   | DTO types, `ORDER_STATUSES`, `SHIPPING_FEE`                  | Anywhere, including client code |
+| `@aurelia/backend/shared`   | DTO types, `ORDER_STATUSES`, delivery fees                   | Anywhere, including client code |
 | `@aurelia/backend/auth`     | Signed-session helpers (Web Crypto only)                     | Anywhere, including middleware  |
 
 Importing the root entry point from a client component would pull Prisma into the browser bundle, which is why constants and types live in `/shared`.

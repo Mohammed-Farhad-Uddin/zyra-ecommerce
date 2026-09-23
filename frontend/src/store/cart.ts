@@ -11,6 +11,7 @@ export type CartItem = {
   image: string | null;
   quantity: number;
   stock: number;
+  isFreeDelivery?: boolean;
 };
 
 type CartState = {
@@ -43,7 +44,11 @@ export const useCart = create<CartState>()(
             return {
               items: state.items.map((i) =>
                 i.productId === item.productId
-                  ? { ...i, quantity: Math.min(i.quantity + quantity, ceilingFor(item.stock)) }
+                  ? {
+                      ...i,
+                      isFreeDelivery: item.isFreeDelivery,
+                      quantity: Math.min(i.quantity + quantity, ceilingFor(item.stock)),
+                    }
                   : i,
               ),
             };
@@ -73,7 +78,7 @@ export const useCart = create<CartState>()(
       setHydrated: () => set({ hydrated: true }),
     }),
     {
-      name: 'aurelia-cart',
+      name: 'zyra-cart',
       partialize: (state) => ({ items: state.items }),
       onRehydrateStorage: () => (state) => state?.setHydrated(),
     },

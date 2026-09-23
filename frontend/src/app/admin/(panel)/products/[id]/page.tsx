@@ -26,6 +26,7 @@ export default async function EditProductPage({ params }: { params: Params }) {
   const dto: ProductDTO = {
     ...product,
     createdAt: product.createdAt.toISOString(),
+    isFreeDelivery: Boolean(product.isFreeDelivery),
     images: product.images.map((image) => ({
       id: image.id,
       url: image.url,
