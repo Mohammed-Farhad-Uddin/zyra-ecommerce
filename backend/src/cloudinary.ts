@@ -1,7 +1,32 @@
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 import { v2 as cloudinary } from 'cloudinary';
+import { config as loadEnv } from 'dotenv';
 import { prisma } from './prisma';
 
 const FOLDER = 'zyra/products';
+
+function loadCloudinaryEnv() {
+  if (
+    process.env.CLOUDINARY_CLOUD_NAME?.trim() &&
+    process.env.CLOUDINARY_API_KEY?.trim() &&
+    process.env.CLOUDINARY_API_SECRET?.trim()
+  ) {
+    return;
+  }
+
+  const files = [
+    path.join(process.cwd(), 'backend', '.env'),
+    path.join(process.cwd(), '..', 'backend', '.env'),
+    path.join(process.cwd(), '.env'),
+  ];
+
+  for (const file of files) {
+    if (existsSync(/*turbopackIgnore: true*/ file)) loadEnv({ path: file });
+  }
+}
+
+loadCloudinaryEnv();
 
 function credentials() {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME?.trim() ?? '';
